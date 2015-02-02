@@ -5,7 +5,7 @@ header('Access-Control-Allow-Origin: *');
 
 // Define some constants
 define( "RECIPIENT_NAME", "Jarratt" );
-define( "RECIPIENT_EMAIL", "andrew23169@gmail.com" );
+define( "RECIPIENT_EMAIL", "jarrarr@sugarandbronze.com" );
 define( "EMAIL_SUBJECT", "Message from Website" );
 
 // Read the form values
