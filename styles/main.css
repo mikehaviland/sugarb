@@ -168,8 +168,12 @@ iframe {
   left: auto;
   bottom: auto;
 }
+
+
+
 .demo-1 .sl-slide .main-title,
 .demo-2 .sl-slide .main-title {
+  color: black;
   letter-spacing: 0;
   font-weight: 400;
   text-transform: none;
