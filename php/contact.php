@@ -64,15 +64,17 @@ if ( $senderName && $senderEmail && $comment ) :
 
     $response = curl_exec($session);
     curl_close($session);
-
+    echo "<p>ACtualy sending out curl stuff.</p>";
     print_r($response);
 
     $success = 'success';
   } catch (Exception $e) {
     print_r($e);
+    echo "<p>Getting exception</p>";
     $success = $e->getMessage();
   }
 else:
+  echo "<p>Incomplete message</p>";
   $success = 'error: incomplete data';
 endif;
 
