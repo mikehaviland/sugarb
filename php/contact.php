@@ -3,6 +3,11 @@
 header('Access-Control-Allow-Headers: x-requested-with');
 header('Access-Control-Allow-Origin: *');
 
+$url = 'https://api.sendgrid.com/';
+$user = 'azure_0ad1ceeea927dd326840306720531329@azure.com';
+$pass = 'EseXD7Mf2RudAIz';
+$to = 'jarratt@sugarandbronze.com';
+
 // Define some constants
 define( "RECIPIENT_NAME", "Jarratt" );
 define( "RECIPIENT_EMAIL", "jarratt@sugarandbronze.com" );
@@ -27,12 +32,38 @@ $comment      = isset( $_POST['comment'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['comment'] )
               : '';
 
+$params = array(
+    'api_user'  => $user,
+    'api_key'   => $pass,
+    'to'        => $to,
+    'subject'   => $subject,
+    'html'      => $comment,
+    'text'      => $comment,
+    'from'      => $senderEmail,
+  );
+$request =  $url.'api/mail.send.json';
+
 // If all values exist, send the email
 if ( $senderName && $senderEmail && $comment ) :
   $recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
   $headers = "From: " . $senderName . " <" . $senderEmail . ">";
   try {
-    mail( $recipient, $subject, $comment, $headers );
+    //mail( $recipient, $subject, $comment, $headers );
+    // Generate curl request
+    $session = curl_init($request);
+    // Tell curl to use HTTP POST
+    curl_setopt ($session, CURLOPT_POST, true);
+    // Tell curl that this is the body of the POST
+    curl_setopt ($session, CURLOPT_POSTFIELDS, $params);
+    // Tell curl not to return headers, but do return the response
+    curl_setopt($session, CURLOPT_HEADER, false);
+    // Tell PHP not to use SSLv3 (instead opting for TLS)
+    curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+// obtain response
+$response = curl_exec($session);
+curl_close($session);
     $success = 'success';
   } catch (Exception $e) {
     $success = $e->getMessage();
