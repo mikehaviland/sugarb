@@ -36,10 +36,10 @@ $params = array(
     'api_user'  => $user,
     'api_key'   => $pass,
     'to'        => $to,
-    'subject'   => $subject,
-    'html'      => $comment,
-    'text'      => $comment,
-    'from'      => $senderEmail,
+    'subject'   => 'testing',
+    'html'      => 'testing',
+    'text'      => 'testing',
+    'from'      => 'bcascio@bluefindata.com',
   );
 $request =  $url.'api/mail.send.json';
 
