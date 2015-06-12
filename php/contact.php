@@ -1,7 +1,8 @@
 <?php
 
-header('Access-Control-Allow-Headers: x-requested-with');
-header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Headers: x-requested-with');
+header('content-type: application/json; charset=utf-8')
+header("Access-Control-Allow-Origin: *");
 
 // Define some constants
 define( "RECIPIENT_NAME", "Jarratt" );
@@ -30,8 +31,6 @@ $subject      = isset( $_POST['subject'] )
 $comment      = isset( $_POST['comment'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['comment'] )
               : '';
-
-$subject = $senderName + ': ' + $subject;
 
 $params = array(
   'api_user' => $user,
@@ -62,9 +61,9 @@ if ( $senderName && $senderEmail && $comment ) :
     $response = curl_exec($session);
     curl_close($session);
 
-    if($response == true || $response == "true"){
-      $success = 'success';
-    }
+    print_r($response);
+    echo "$response";
+    $success = 'success';
   } catch (Exception $e) {
     $success = $e->getMessage();
   }
