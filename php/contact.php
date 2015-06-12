@@ -6,12 +6,16 @@ header('Access-Control-Allow-Origin: *');
 // Define some constants
 define( "RECIPIENT_NAME", "Jarratt" );
 define( "RECIPIENT_EMAIL", "jarratt@sugarandbronze.com" );
-define( "EMAIL_SUBJECT", "Message from Website" );
+define( "EMAIL_SUBJECT", "Information Request" );
+$url = 'https://api.sendgrid.com/';
+$user = 'azure_0ad1ceeea927dd326840306720531329@azure.com';
+$pass = 'EseXD7Mf2RudAIz';
+$recipient = "jarratt@sugarandbronze.com";
 
 // Read the form values
 $success      = false;
 //$xhr          = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-/*$xhr          = isset( $_POST['ajax'] )
+$xhr          = isset( $_POST['ajax'] )
               ? true
               : false;
 $senderName   = isset( $_POST['senderName'] )
@@ -26,20 +30,41 @@ $subject      = isset( $_POST['subject'] )
 $comment      = isset( $_POST['comment'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['comment'] )
               : '';
-*/
 
-$senderName = $_POST['senderName'];
-$senderEmail = $_POST['senderEmail'];
-$comment = $_POST['comment'];
-$subject = "New Information Request";
-$mailheader = "From : $senderEmail \r\n";
+$subject = $senderName + ': ' + $subject;
+
+$params = array(
+  'api_user' => $user,
+  'api_key' => $pass,
+  'to' => $recipient,
+  'subject' => $subject,
+  "text" => $comment,
+  "from" => $senderEmail
+);
+
+$request = $url.'api/mail.send.json';
+
+
 // If all values exist, send the email
 if ( $senderName && $senderEmail && $comment ) :
   //$recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
   //$headers = "From: " . $senderName . " <" . $senderEmail . ">";
   try {
-    mail( $recipient, $subject, $comment, $mailheader );
-    $success = 'success';
+    $session = curl_init($request);
+
+    curl_setopt($session, CURLOPT_POST, true);
+
+    curl_setopt($session, CURLOPT_POSTFIELDS, $params);
+
+    curl_setopt($session, CURLOPT_HEADER, false);
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($session);
+    curl_close($session);
+
+    if($response == true || $response == "true"){
+      $success = 'success';
+    }
   } catch (Exception $e) {
     $success = $e->getMessage();
   }
