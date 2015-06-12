@@ -1,86 +1,49 @@
 <?php
 
 header('Access-Control-Allow-Headers: x-requested-with');
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
 
 // Define some constants
 define( "RECIPIENT_NAME", "Jarratt" );
 define( "RECIPIENT_EMAIL", "jarratt@sugarandbronze.com" );
 define( "EMAIL_SUBJECT", "Information Request" );
-$url = 'https://api.sendgrid.com/';
-$user = 'azure_0ad1ceeea927dd326840306720531329@azure.com';
-$pass = 'EseXD7Mf2RudAIz';
-$recipient = "jarratt@sugarandbronze.com";
 
 // Read the form values
 $success      = false;
 //$xhr          = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-/*$xhr          = isset( $_POST['ajax'] )
+$xhr          = isset( $_POST['ajax'] )
               ? true
-              : false;*/
-$senderName   = $_POST['senderName'];
-              /*isset( $_POST['senderName'] )
+              : false;
+$senderName   = isset( $_POST['senderName'] )
               ? preg_replace( "/[^\.\-\' a-zA-Z0-9]/", '', $_POST['senderName'] )
-              : '';*/
-$senderEmail  = $_POST('senderEmail');
-              /*isset( $_POST['senderEmail'] )
+              : '';
+$senderEmail  = isset( $_POST['senderEmail'] )
               ? preg_replace( "/[^\.\-\_\@a-zA-Z0-9]/", '', $_POST['senderEmail'] )
-              : '';*/
-$subject      = $_POST('subect');
-              /*isset( $_POST['subject'] )
+              : '';
+$subject      = isset( $_POST['subject'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['subject'] )
-              : EMAIL_SUBJECT;*/
-$comment      = $_POST('comment');
-              /*isset( $_POST['comment'] )
+              : EMAIL_SUBJECT;
+$comment      = isset( $_POST['comment'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['comment'] )
-              : '';*/
-
-$params = array(
-  'api_user' => $user,
-  'api_key' => $pass,
-  'to' => $recipient,
-  'subject' => $subject,
-  "text" => $comment,
-  "from" => $senderEmail,
-);
-
-$request = $url.'api/mail.send.json';
-
+              : '';
 
 // If all values exist, send the email
 if ( $senderName && $senderEmail && $comment ) :
-  //$recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
-  //$headers = "From: " . $senderName . " <" . $senderEmail . ">";
+  $recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
+  $headers = "From: " . $senderName . " <" . $senderEmail . ">";
   try {
-    $session = curl_init($request);
-
-    curl_setopt($session, CURLOPT_POST, true);
-
-    curl_setopt($session, CURLOPT_POSTFIELDS, $params);
-
-    curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($session, CURLOPT_HEADER, false);
-    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-
-    $response = curl_exec($session);
-    curl_close($session);
-    echo "<p>ACtualy sending out curl stuff.</p>";
-    print_r($response);
-
+    mail( $recipient, $subject, $comment, $headers );
     $success = 'success';
   } catch (Exception $e) {
-    print_r($e);
-    echo "<p>Getting exception</p>";
     $success = $e->getMessage();
   }
 else:
-  echo "<p>Incomplete message</p>";
   $success = 'error: incomplete data';
 endif;
 
 // Return an appropriate response to the browser
-/*if ( $xhr ) : // AJAX Request
-  echo $success;*/
+if ( $xhr ) : // AJAX Request
+  echo $success;
 
 else : // HTTP Request ?>
 <!doctype html>
