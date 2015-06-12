@@ -11,7 +11,7 @@ define( "EMAIL_SUBJECT", "Message from Website" );
 // Read the form values
 $success      = false;
 //$xhr          = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-$xhr          = isset( $_POST['ajax'] )
+/*$xhr          = isset( $_POST['ajax'] )
               ? true
               : false;
 $senderName   = isset( $_POST['senderName'] )
@@ -26,13 +26,19 @@ $subject      = isset( $_POST['subject'] )
 $comment      = isset( $_POST['comment'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['comment'] )
               : '';
+*/
 
+$senderName = $_POST['senderName'];
+$senderEmail = $_POST['senderEmail'];
+$comment = $_POST['comment'];
+$subject = "New Information Request";
+$mailheader = "From : $senderEmail \r\n";
 // If all values exist, send the email
 if ( $senderName && $senderEmail && $comment ) :
-  $recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
-  $headers = "From: " . $senderName . " <" . $senderEmail . ">";
+  //$recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
+  //$headers = "From: " . $senderName . " <" . $senderEmail . ">";
   try {
-    mail( $recipient, $subject, $comment, $headers );
+    mail( $recipient, $subject, $comment, $mailheader );
     $success = 'success';
   } catch (Exception $e) {
     $success = $e->getMessage();
