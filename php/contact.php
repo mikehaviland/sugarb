@@ -1,7 +1,6 @@
 <?php
 
 header('Access-Control-Allow-Headers: x-requested-with');
-header('content-type: application/json; charset=utf-8')
 header("Access-Control-Allow-Origin: *");
 
 // Define some constants
@@ -16,9 +15,9 @@ $recipient = "jarratt@sugarandbronze.com";
 // Read the form values
 $success      = false;
 //$xhr          = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-$xhr          = isset( $_POST['ajax'] )
+/*$xhr          = isset( $_POST['ajax'] )
               ? true
-              : false;
+              : false;*/
 $senderName   = isset( $_POST['senderName'] )
               ? preg_replace( "/[^\.\-\' a-zA-Z0-9]/", '', $_POST['senderName'] )
               : '';
@@ -73,8 +72,8 @@ else:
 endif;
 
 // Return an appropriate response to the browser
-if ( $xhr ) : // AJAX Request
-  echo $success;
+/*if ( $xhr ) : // AJAX Request
+  echo $success;*/
 
 else : // HTTP Request ?>
 <!doctype html>
