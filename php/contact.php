@@ -41,13 +41,14 @@ $params = array(
     'text'      => 'testing',
     'from'      => 'bcascio@bluefindata.com',
   );
-$request =  $url.'api/mail.send.json';
+$request =  'https://api.sendgrid.com/api/mail.send.json';
 
 // If all values exist, send the email
 if ( $senderName && $senderEmail && $comment ) :
   $recipient = RECIPIENT_NAME . " <" . RECIPIENT_EMAIL . ">";
   $headers = "From: " . $senderName . " <" . $senderEmail . ">";
   try {
+    /*
     //mail( $recipient, $subject, $comment, $headers );
     // Generate curl request
     $session = curl_init($request);
@@ -61,9 +62,19 @@ if ( $senderName && $senderEmail && $comment ) :
     curl_setopt($session, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
     curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
+
 // obtain response
 $response = curl_exec($session);
-curl_close($session);
+curl_close($session);*/
+    $options = array(
+      'http' => array(
+          'header' => "Content-Type: Application/x-www-form-urlencoded\r\n",
+          'method' => 'POST',
+          'content' => http_build_query($params),
+        ),
+    );
+    $context = stream_context_create($options);
+    $result = file_get_contents($request, false, $context);
     $success = 'success';
   } catch (Exception $e) {
     $success = $e->getMessage();
