@@ -18,18 +18,22 @@ $success      = false;
 /*$xhr          = isset( $_POST['ajax'] )
               ? true
               : false;*/
-$senderName   = isset( $_POST['senderName'] )
+$senderName   = $_POST['senderName'];
+              /*isset( $_POST['senderName'] )
               ? preg_replace( "/[^\.\-\' a-zA-Z0-9]/", '', $_POST['senderName'] )
-              : '';
-$senderEmail  = isset( $_POST['senderEmail'] )
+              : '';*/
+$senderEmail  = $_POST('senderEmail');
+              /*isset( $_POST['senderEmail'] )
               ? preg_replace( "/[^\.\-\_\@a-zA-Z0-9]/", '', $_POST['senderEmail'] )
-              : '';
-$subject      = isset( $_POST['subject'] )
+              : '';*/
+$subject      = $_POST('subect');
+              /*isset( $_POST['subject'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['subject'] )
-              : EMAIL_SUBJECT;
-$comment      = isset( $_POST['comment'] )
+              : EMAIL_SUBJECT;*/
+$comment      = $_POST('comment');
+              /*isset( $_POST['comment'] )
               ? preg_replace( "/(From:|To:|BCC:|CC:|Subject:|Content-Type:)/", '', $_POST['comment'] )
-              : '';
+              : '';*/
 
 $params = array(
   'api_user' => $user,
@@ -37,7 +41,7 @@ $params = array(
   'to' => $recipient,
   'subject' => $subject,
   "text" => $comment,
-  "from" => $senderEmail
+  "from" => $senderEmail,
 );
 
 $request = $url.'api/mail.send.json';
@@ -54,6 +58,7 @@ if ( $senderName && $senderEmail && $comment ) :
 
     curl_setopt($session, CURLOPT_POSTFIELDS, $params);
 
+    curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($session, CURLOPT_HEADER, false);
     curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
