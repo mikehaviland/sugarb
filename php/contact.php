@@ -62,9 +62,10 @@ if ( $senderName && $senderEmail && $comment ) :
     curl_close($session);
 
     print_r($response);
-    echo "$response";
+
     $success = 'success';
   } catch (Exception $e) {
+    print_r($e);
     $success = $e->getMessage();
   }
 else:
