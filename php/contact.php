@@ -3,9 +3,9 @@
 header('Access-Control-Allow-Headers: x-requested-with');
 header('Access-Control-Allow-Origin: *');
 
-$url = 'https://api.sendgrid.com/';
-$user = 'azure_0ad1ceeea927dd326840306720531329@azure.com';
-$pass = 'EseXD7Mf2RudAIz';
+$url = '';
+$user = '';
+$pass = '';
 $to = 'jarratt@sugarandbronze.com';
 
 // Define some constants
